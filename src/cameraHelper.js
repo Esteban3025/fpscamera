@@ -8,13 +8,13 @@ export class cameraHelper{
         const near = 0.1;
         const far = 100;
         this._camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-        this._camera.position.set(0, 20, 30);
+        this._camera.position.set(0, 5, 20);
 
         this.gui = new GUI();
 	    this.gui.add( this._camera, 'fov', 1, 180 ).onChange(value => {
             this._camera.fov = value;
             this._updateCamera();
-        });
+            });
 	    const minMaxGUIHelper = new MinMaxGUIHelper( this._camera, 'near', 'far', 0.1 );
         this.gui.add( minMaxGUIHelper, 'min', 0.1, 50, 0.1 ).name( 'near' ).onChange(value => {
             this._camera.near = value;

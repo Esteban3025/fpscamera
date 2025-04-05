@@ -7,7 +7,7 @@ export class lightsSetup {
         this.color = 0xFFFFFF;
         this.intensity = 150;
         this.light = new THREE.PointLight(this.color, this.intensity);
-        this.light.position.set(2.31, 20, 0);
+        this.light.position.set(7.26, 11.5, 10);
         this.scene.add(this.light);
 
         this.helper = new THREE.PointLightHelper(this.light);
