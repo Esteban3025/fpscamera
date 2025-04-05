@@ -17,32 +17,40 @@ class Basic3dWorld {
         this._renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this._renderer.domElement);
 
-        // Camera2
+        // Camera2 perspective
         const fov = 50;
         const aspect = 2
         const near = 0.1;
         const far = 100;
         this._camera2 = new THREE.PerspectiveCamera(fov, aspect, near, far);
-        this._camera2.position.set(0, 1, 30);
+        this._camera2.position.set(0, 5, 30);
+        
     
         // this._camera = new cameraHelper();
 
-        // Scene
+        // Scene 1
         this._scene = new THREE.Scene();
-        this._scene.background = new THREE.Color(0x000000);
+        this._scene.background = new THREE.Color(0x000040);
         new lightsSetup(this._scene);
+
+        // Camera first person
         this._camera = new cameraHelper()._camera;
-        this._camera.lookAt(0, 0, 0);
 
-        // Controls 2
-        this.controls = new FirstPersonControls(this._camera, this._renderer.domElement);
-        this.controls.movementSpeed = 5;
-		this.controls.lookSpeed = 0.05;
-        this.controls.verticalMax = 0;
-        this.controls.verticalmin = 0;
+        // Controls 2 firts person
+        // this.controls = new FirstPersonControls(this._camera, this._renderer.domElement);
+        // this.controls.movementSpeed = 5;
+		// this.controls.lookSpeed = 0.05;
+        // this.controls.verticalMax = 0;
+        // this.controls.verticalmin = 0;
 
+        // Controls 1 perspective camera
+        this.controls2 = new OrbitControls(this._camera, this._renderer.domElement);
+        //this.controls2.target.set(0, 5, 0);
+        this.controls2.update();
+
+        // Controls 2 perspective camera 2
         this.controls2 = new OrbitControls(this._camera2, this._renderer.domElement);
-        this.controls2.target.set(0, 5, 0);
+        this.controls2.target.set(0, 1, 0);
         this.controls2.update();
 
 
@@ -70,23 +78,28 @@ class Basic3dWorld {
         this._scene.add(ground);
 
 
-        // Cube
-        const cubeSize = 8;
-        const cubeGeo = new THREE.BoxGeometry( cubeSize, cubeSize, cubeSize );
-        const cubeMat = new THREE.MeshPhongMaterial( { color: '#fffffff' } );
-        const cube = new THREE.Mesh( cubeGeo, cubeMat );
-        cube.position.set( 0, cubeSize / 2, 0);
-        this._scene.add( cube );
+        // Cylinder
+        const cylinderSize = 2;
+        const radiusTop = 1.50;
+        const radiumBottom = 2.34;
+        const height = 18.669;
+        const cylinderGeo = new THREE.CylinderGeometry( radiusTop, radiumBottom, height );
+        const cylinderMat = new THREE.MeshPhongMaterial( { color: '#FF0000' } );
+        this._playerbody = new THREE.Mesh( cylinderGeo, cylinderMat );
+        this._playerbody.position.set( 0, cylinderSize / 2, 0);
+        this._playerbody.add(this._camera_camera);
 
+        this._scene.add( this._playerbody );
+    
         this._renderer.setScissorTest(true);
-        this._animate(cube, clock);
+        this._animate(this._cube, clock);
     }
 
     _OnWindowResize() {
         this._camera.aspect = window.innerWidth / window.innerHeight;
         this._camera.updateProjectionMatrix();
         this._renderer.setSize(window.innerWidth, window.innerHeight);
-        this.controls.handleResize();
+        this.controls2.handleResize();
     }
 
     _animate(cube, clock) {
@@ -96,9 +109,9 @@ class Basic3dWorld {
         // cube.rotation.y += 0.01; 
         
         // Renderizar la escena
-        this.controls.update( clock.getDelta() );
+        // this.controls.update( clock.getDelta() );
         // this._camera2.updateProjectionMatrix();
-        // this._renderer.render(this._scene, this._camera);
+        this._renderer.render(this._scene, this._camera2);
 
         const width = window.innerWidth;
         const height = window.innerHeight;
@@ -112,7 +125,7 @@ class Basic3dWorld {
         // 🔹 Vista derecha (cámara 2)
         this._renderer.setViewport(halfWidth, 0, halfWidth, height);
         this._renderer.setScissor(halfWidth, 0, halfWidth, height);
-        this._renderer.render(this._scene, this._camera2);  
+        his._renderer.render(this._scene, this._camera2);  
     }
 }
 

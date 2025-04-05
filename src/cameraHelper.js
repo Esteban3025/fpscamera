@@ -6,9 +6,9 @@ export class cameraHelper{
         const fov = 50;
         const aspect = 2;
         const near = 0.1;
-        const far = 100;
+        const far = 1000;
         this._camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-        this._camera.position.set(0, 5, 20);
+        // this._camera.position.set(5, 1, 0);
 
         this.gui = new GUI();
 	    this.gui.add( this._camera, 'fov', 1, 180 ).onChange(value => {
@@ -24,6 +24,9 @@ export class cameraHelper{
             this._camera.far = value;
             this._updateCamera();
         });
+        this.gui.add( this._camera.position, 'x', - 100, 10 ).onChange( () => this._updateCamera() );
+        this.gui.add( this._camera.position, 'y', 0, 100 ).onChange( () => this._updateCamera() );
+        this.gui.add( this._camera.position, 'z', - 100, 10 ).onChange( () => this._updateCamera() );
     }
 
     _updateCamera() {
