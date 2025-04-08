@@ -1,36 +1,39 @@
 import * as THREE from 'three';
-import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
 export class cameraHelper{
-    constructor() {
+    constructor(camera, cameraFolder){
+        this.camera = camera
         const fov = 50;
         const aspect = 2;
         const near = 0.1;
         const far = 1000;
-        this._camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-        // this._camera.position.set(5, 1, 0);
-
-        this.gui = new GUI();
-	    this.gui.add( this._camera, 'fov', 1, 180 ).onChange(value => {
-            this._camera.fov = value;
+        this.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+        this.camera.position.set(7.26, 11.5, 10);
+        
+	    cameraFolder.add( this.camera, 'fov', 1, 180 ).onChange(value => {
+            this.camera.fov = value;
             this._updateCamera();
             });
-	    const minMaxGUIHelper = new MinMaxGUIHelper( this._camera, 'near', 'far', 0.1 );
-        this.gui.add( minMaxGUIHelper, 'min', 0.1, 50, 0.1 ).name( 'near' ).onChange(value => {
-            this._camera.near = value;
+	    const minMaxGUIHelper = new MinMaxGUIHelper( this.camera, 'near', 'far', 0.1 );
+        cameraFolder.add( minMaxGUIHelper, 'min', 0.1, 50, 0.1 ).name( 'near' ).onChange(value => {
+            this.camera.near = value;
             this._updateCamera();
         });
-        this.gui.add( minMaxGUIHelper, 'max', 0.1, 50, 0.1 ).name( 'far' ).onChange( value => {
-            this._camera.far = value;
+        cameraFolder.add( minMaxGUIHelper, 'max', 0.1, 50, 0.1 ).name( 'far' ).onChange( value => {
+            this.camera.far = value;
             this._updateCamera();
         });
-        this.gui.add( this._camera.position, 'x', - 100, 10 ).onChange( () => this._updateCamera() );
-        this.gui.add( this._camera.position, 'y', 0, 100 ).onChange( () => this._updateCamera() );
-        this.gui.add( this._camera.position, 'z', - 100, 10 ).onChange( () => this._updateCamera() );
+        cameraFolder.add( this.camera.position, 'x', - 100, 10 ).onChange( () => this._updateCamera() );
+        cameraFolder.add( this.camera.position, 'y', 0, 100 ).onChange( () => this._updateCamera() );
+        cameraFolder.add( this.camera.position, 'z', - 100, 10 ).onChange( () => this._updateCamera() );
     }
 
     _updateCamera() {
-        this._camera.updateProjectionMatrix();
+        this.camera.updateProjectionMatrix();
+    }
+
+    getFolder() {
+        return this.camera;
     }
 }    
 
