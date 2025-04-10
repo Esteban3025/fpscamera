@@ -3,12 +3,12 @@ import * as THREE from 'three';
 export class cameraHelper{
     constructor(camera, cameraFolder){
         this.camera = camera
-        const fov = 50;
+        const fov = 56;
         const aspect = 2;
         const near = 0.1;
         const far = 1000;
         this.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-        this.camera.position.set(7.26, 11.5, 10);
+        this.camera.position.set(-3, 100, 30);
         
 	    cameraFolder.add( this.camera, 'fov', 1, 180 ).onChange(value => {
             this.camera.fov = value;
@@ -25,7 +25,7 @@ export class cameraHelper{
         });
         cameraFolder.add( this.camera.position, 'x', - 100, 10 ).onChange( () => this._updateCamera() );
         cameraFolder.add( this.camera.position, 'y', 0, 100 ).onChange( () => this._updateCamera() );
-        cameraFolder.add( this.camera.position, 'z', - 100, 10 ).onChange( () => this._updateCamera() );
+        cameraFolder.add( this.camera.position, 'z', - 100, 100 ).onChange( () => this._updateCamera() );
     }
 
     _updateCamera() {
